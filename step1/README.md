@@ -36,7 +36,7 @@ $ argocd login localhost:8080
 ## 2. local-path-provisioner
 
 > この手順は2024/03に書かれたものです。更新により変更される可能性があるため公式リポジトリを確認してください
-> https://github.com/kubernetes-csi/csi-driver-host-path
+> https://github.com/rancher/local-path-provisioner
 
 1. local-path-provisioner Applicationを作成する
 ```bash
