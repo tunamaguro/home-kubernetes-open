@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secret-demo
+  namespace: secret-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: secret-demo
+  template:
+    metadata:
+      labels:
+        app: secret-demo
+    spec:
+      containers:
+        - image: nginx
+          name: nginx
+          resources:
+            limits:
+              cpu: 100m
+              memory: 50Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+          volumeMounts:
+            - name: secrets
+              mountPath: /etc/secrets
+              readOnly: true
+      volumes:
+        - name: secrets
+          secret:
+            secretName: vault-secret
