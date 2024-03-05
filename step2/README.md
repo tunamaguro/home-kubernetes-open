@@ -5,6 +5,7 @@ Service type: LoadBalancerやIngressなどの他から利用されるリソー�
 - MetalLB
 - ingress-nginx
 - external-dns
+- cert-manager
 
 ## MetalLB用のIPアドレスの調整
 1. `l2-loadbalancer/address_pool.yaml`のaddressesを使いたいIPアドレスの範囲に合わせて変更する。現状は`192.168.20.230`~`192.168.20.254`のレンジを使用している
