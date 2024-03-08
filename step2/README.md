@@ -67,7 +67,33 @@ bound_service_account_namespaces=cert-manager \
 policies=read-cert-manager
 ```
 
-5. リソースをデプロイする
+## cloudflare tunnel用のシークレットを作成する
+1. tunnel用のトークンをvaultに登録する
+```bash
+$ vault kv put kv/cloudflare-tunnel/tunnel-1 token=<token>
+$ vault kv put kv/cloudflare-tunnel/tunnel-2 token=<token>
+```
+
+2. ポリシーを作成する
+```bash
+$ vault policy write read-cloudflare-tunnel -  << EOF
+path "kv/data/cloudflare-tunnel/*" {
+    capabilities = ["read"]
+}
+EOF
+```
+
+3. ロールを作成する
+```bash
+$ vault write auth/kubernetes/role/read-cloudflare-tunnel \
+bound_service_account_names=default \
+bound_service_account_namespaces=cloudflare-tunnel \
+policies=read-cloudflare-tunnel
+```
+
+## Applicationのデプロイ
+
+1. リソースをデプロイする
 
 ```bash
 $ argocd app create --file app.yaml 
