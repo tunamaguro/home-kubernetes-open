@@ -5,6 +5,7 @@
 - external-dns
 - cert-manager
 - cloudflare-tunnel
+- (Rook-Ceph)
 
 ## external-dnsおよびcert-managerで利用するトークン作成およびシークレット作成
 
