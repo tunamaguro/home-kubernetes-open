@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-external-cluster
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://charts.rook.io/release
+    chart: rook-ceph-cluster
+    targetRevision: v1.13.6
+    helm:
+      valuesObject:
+        cephClusterSpec:
+          external:
+            enable: true
+          crashCollector:
+            disable: true
+          healthCheck:
+            daemonHealth:
+              mon:
+                disabled: false
+                interval: 45s
+        cephBlockPools: {}
+        cephFileSystems: {}
+        cephObjectStores: {}
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: rook-ceph-external 
+  

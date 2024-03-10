@@ -84,3 +84,51 @@ policies=read-cloudflare-tunnel
 $ argocd app create --file app.yaml 
 $ argocd app sync argocd/base-extensions
 ```
+
+## (おまけ) ProxmoxのCephをRookで利用する
+
+> 参考: https://rook.io/docs/rook/latest-release/CRDs/Cluster/external-cluster/
+
+1. Rookのオペレータをデプロイする
+
+```bash
+$ argocd app sync argocd/rook-ceph
+```
+
+2. Proxmox上でpvに利用するpoolを作成する
+
+```bash
+$ pveceph pool create k8s-pv-pool
+```
+
+> https://pve.proxmox.com/wiki/Deploy_Hyper-Converged_Ceph_Cluster
+
+3. スクリプトをダウンロードし実行する
+
+> スクリプトは各自がインストールしたRookのバージョンに合わせること
+
+```bash
+$ wget https://raw.githubusercontent.com/rook/rook/v1.13.6/deploy/examples/create-external-cluster-resources.py
+$ python3 create-external-cluster-resources.py --namespace rook-ceph-external --rbd-data-pool-name k8s-pv-pool --format bash --skip-monitoring-endpoint --v2-port-enable --restricted-auth-permission
+```
+
+この時の出力は別途メモしておく
+
+4. import用のスクリプトをダウンロードし実行する
+
+```bash
+$ wget https://raw.githubusercontent.com/rook/rook/v1.13.6/deploy/examples/import-external-cluster.sh
+$ // 先ほどメモした出力を実行
+$ . import-external-cluster.sh
+```
+
+5. External Clusterをデプロイする
+```bash
+$ argocd app create --file rook/ceph-external-cluster.yaml 
+$ argocd app sync argocd/rook-ceph-external-cluster 
+```
+
+6. Ceph Clusterが動作していることを確認する
+```bash
+$ kubectl -n rook-ceph-external get cephclusters.ceph.rook.io 
+```
