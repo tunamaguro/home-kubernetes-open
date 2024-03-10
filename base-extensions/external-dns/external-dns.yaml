@@ -58,10 +58,12 @@ spec:
         - --source=ingress
         - --policy=sync # If you don't want to delete the record when the ingress disappears, set it to upsert-only
         - --events
-        - --interval=15s
+        - --interval=1m
         - --provider=cloudflare
         - --cloudflare-proxied
         - --cloudflare-dns-records-per-page=5000 # (optional) configure how many DNS records to fetch per request
+        - --log-level=debug
+        - --log-format=json
         resources:
           limits:
             cpu: 50m
@@ -75,3 +77,4 @@ spec:
             secretKeyRef:
               name: cloudflare-secret
               key: token
+              optional: false
