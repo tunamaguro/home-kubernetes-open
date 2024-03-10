@@ -33,24 +33,11 @@ $ kubectl port-forward -n argocd services/argocd-server 8080:443 (別ターミ�
 $ argocd login localhost:8080
 ```
 
-## 2. local-path-provisioner
+## 2. Vault以外のコンポーネントのデプロイ
 
-> この手順は2024/03に書かれたものです。更新により変更される可能性があるため公式リポジトリを確認してください
-> https://github.com/rancher/local-path-provisioner
-
-1. local-path-provisioner Applicationを作成する
 ```bash
-$ argocd app create --file local-path-provisioner/local-path-provisioner-app.yaml 
-```
-
-2. 同期する
-```bash
-$ argocd app sync argocd/local-path-provisioner 
-```
-
-2. `STATUS`がHealtyなことを確認する
-```bash
-$ argocd app list
+$ argocd app create --file base-apps.yaml
+$ $ argocd app sync argocd/base-apps
 ```
 
 ## 3. Vaultのインストール
@@ -83,27 +70,23 @@ $ kubectl -n vault exec -it vault-0 -- vault operator init > vault/root_token
 $ vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
 ```
 
-## 4. Vault-Secrets-Operatorのインストール
-1. Vault-Secrets-Operator Applicationを作成する
-```bash
-$ argocd app create --file secret-operator/secret-operator-app.yaml 
-```
+## 4. Vault-Secrets-Operatorの動作チェック
 
-2. 動作チェックを行う。まずvaultにログインする
+1. 動作チェックを行う。まずvaultにログインする
 ```bash
 $ kubectl -n vault exec -it vault-0 -- sh
 ```
-3. kv-v2シークレットエンジンを作成する
+2. kv-v2シークレットエンジンを作成する
 ```bash
 $ vault secrets enable -path demo-secret kv-v2
 ```
 
-4. 適当なシークレットを作成する
+3. 適当なシークレットを作成する
 ```bash
 $ vault kv put demo-secret/example user=fuga password=hoge123
 ```
 
-5. 先ほど作成したシークレットを参照できるポリシーを作成する
+4. 先ほど作成したシークレットを参照できるポリシーを作成する
 ```bash
 $ vault policy write demo-secret - <<EOF
 path "demo-secret/*" {
@@ -112,7 +95,7 @@ path "demo-secret/*" {
 EOF
 ```
 
-6. ポリシーを利用するロールを作成する。今回は`secret-demo`名前空間の`default`サービスアカウントに`demo-secret`ポリシーを紐づける
+5. ポリシーを利用するロールを作成する。今回は`secret-demo`名前空間の`default`サービスアカウントに`demo-secret`ポリシーを紐づける
 
 ```bash
 $ vault write auth/kubernetes/role/read-demo-secret \
@@ -123,12 +106,12 @@ policies=demo-secret
 
 > 設定を確認するには`vault read auth/kubernetes/role/read-demo-secret`を実行
 
-7. デモ用アプリを作成する
+6. デモ用アプリを作成する
 ```bash
 $ kubectl apply -f secret-operator/tests/
 ```
 
-8. シークレットが設定されているか確認する
+7. シークレットが設定されているか確認する
 ```bash
 $ kubectl -n secret-demo exec -it deployments/secret-demo -- ls -l /etc/secrets
 total 0
@@ -147,7 +130,7 @@ $ kubectl -n secret-demo exec -it deployments/secret-demo -- cat /etc/secrets/pa
 hoge123
 ```
 
-9. シークレットを変更したときに変更されることを確認する
+8. シークレットを変更したときに変更されることを確認する
 ```bash
 $ vault kv put demo-secret/example user=foo password=bar777
 ```
@@ -167,7 +150,7 @@ $ kubectl -n secret-demo get rs
 # replicasetsが増えていることを確認する
 ```
 
-10. 作成したリソースを削除する
+9. 作成したリソースを削除する
 
 ```bash
 $ kubectl delete -f secret-operator/tests/
