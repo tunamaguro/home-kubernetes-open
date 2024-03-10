@@ -33,14 +33,28 @@ $ kubectl port-forward -n argocd services/argocd-server 8080:443 (別ターミ�
 $ argocd login localhost:8080
 ```
 
-## 2. Vault以外のコンポーネントのデプロイ
+## 2. MetalLB用のIPアドレスの調整
+1. `l2-loadbalancer/address_pool.yaml`のaddressesを使いたいIPアドレスの範囲に合わせて変更する。現状は`192.168.20.230`~`192.168.20.254`のレンジを使用している
+
+```yaml
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: primary-pool
+  namespace: metallb
+spec:
+  addresses:
+  - 192.168.20.230-192.168.20.254 # <--この部分
+```
+
+## 3. Vault以外のコンポーネントのデプロイ
 
 ```bash
 $ argocd app create --file base-apps.yaml
 $ $ argocd app sync argocd/base-apps
 ```
 
-## 3. Vaultのインストール
+## 4. Vaultのインストール
 1. GCPにてKMS用の鍵とサービスアカウントを作成する。サービスアカウントの鍵は`vault/credentials.json`という名前で保存しておく
 
 2. `vault/vault-app.yaml.example`の`gcpckms`を設定に合わせて書き換え、`vault/vault-app.yaml`として保存する
@@ -71,7 +85,7 @@ $ vault auth enable kubernetes
 $ vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
 ```
 
-## 4. Vault-Secrets-Operatorの動作チェック
+## 5. Vault-Secrets-Operatorの動作チェック
 
 1. 動作チェックを行う。まずvaultにログインする
 ```bash

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: step2
+  name: base-extensions
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io

@@ -1,25 +1,10 @@
 ## 概要
 
-Service type: LoadBalancerやIngressなどの他から利用されるリソースをインストールします。現状利用しているものは以下の通りです
+いろいろ便利なものをインストールします。現状利用しているものは以下の通りです
 
-- MetalLB
-- ingress-nginx
 - external-dns
 - cert-manager
-
-## MetalLB用のIPアドレスの調整
-1. `l2-loadbalancer/address_pool.yaml`のaddressesを使いたいIPアドレスの範囲に合わせて変更する。現状は`192.168.20.230`~`192.168.20.254`のレンジを使用している
-
-```yaml
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: primary-pool
-  namespace: metallb
-spec:
-  addresses:
-  - 192.168.20.230-192.168.20.254 # <--この部分
-```
+- cloudflare-tunnel
 
 ## external-dnsおよびcert-managerで利用するトークン作成およびシークレット作成
 
@@ -97,5 +82,5 @@ policies=read-cloudflare-tunnel
 
 ```bash
 $ argocd app create --file app.yaml 
-$ argocd app sync argocd/step2
+$ argocd app sync argocd/base-extensions
 ```
