@@ -86,6 +86,13 @@ $ argocd app create --file app.yaml
 $ argocd app sync argocd/base-extensions
 ```
 
+## Minio Operatorコンソールへのログイン
+
+1. ログイン用のトークンを確認する
+```bash
+$ kubectl get secret/console-sa-secret -n minio-operator -o json | jq -r ".data.token" | base64 -d
+```
+
 ## (おまけ) ProxmoxのCephをRookで利用する
 
 > 参考: https://rook.io/docs/rook/latest-release/CRDs/Cluster/external-cluster/
