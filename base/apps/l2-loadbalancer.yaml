@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/tunamaguro/home-kubernetes-open.git
-    path: "l2-loadbalancer"
+    path: base/l2-loadbalancer
     targetRevision: main
   destination:
     server: "https://kubernetes.default.svc"
