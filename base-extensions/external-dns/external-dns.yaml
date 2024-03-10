@@ -57,6 +57,7 @@ spec:
         - --source=service 
         - --source=ingress
         - --policy=sync # If you don't want to delete the record when the ingress disappears, set it to upsert-only
+        - --events
         - --interval=15s
         - --provider=cloudflare
         - --cloudflare-proxied
