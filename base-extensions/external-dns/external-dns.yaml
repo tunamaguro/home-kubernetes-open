@@ -60,7 +60,6 @@ spec:
         - --events
         - --interval=1m
         - --provider=cloudflare
-        - --cloudflare-proxied
         - --cloudflare-dns-records-per-page=5000 # (optional) configure how many DNS records to fetch per request
         - --log-level=debug
         - --log-format=json
