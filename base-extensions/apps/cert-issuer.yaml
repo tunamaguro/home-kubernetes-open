@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-cluster-issuer
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tunamaguro/home-kubernetes-open.git
+    path: base-extensions/cert-manager
+    targetRevision: main
+  destination:
+    server: "https://kubernetes.default.svc"
+  syncPolicy:
+    automated: 
+      prune: true

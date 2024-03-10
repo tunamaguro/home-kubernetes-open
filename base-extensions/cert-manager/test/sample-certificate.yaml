@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: test-staging-tls
+spec:
+  secretName: test-staging-tls
+  dnsNames:
+    - test.tunamaguro.work
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+    group: cert-manager.io

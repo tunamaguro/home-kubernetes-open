@@ -8,8 +8,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/tunamaguro/home-kubernetes-step2.git
+    repoURL: https://github.com/tunamaguro/home-kubernetes-open.git
     targetRevision: main
-    path: apps
+    path: base-extensions/apps
   destination:
     server: "https://kubernetes.default.svc"
