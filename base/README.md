@@ -67,6 +67,7 @@ $ kubectl -n vault exec -it vault-0 -- vault operator init > vault/root_token
 
 6. kubernetesの認証を構成する。詳細はドキュメント確認すること(https://developer.hashicorp.com/vault/docs/auth/kubernetes)
 ```bash
+$ vault auth enable kubernetes
 $ vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
 ```
 
