@@ -30,7 +30,7 @@ spec:
     server: "https://kubernetes.default.svc"
     namespace: minio-operator
   syncPolicy:
-    # automated: 
-    #   prune: true
+    automated: 
+      prune: true
     syncOptions:
       - CreateNamespace=true
