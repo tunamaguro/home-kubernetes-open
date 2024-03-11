@@ -1,0 +1,3 @@
+[submodule "running-apps/maguroskey-manifest"]
+	path = running-apps/maguroskey-manifest
+	url = https://github.com/tunamaguro/maguroskey-manifest.git
