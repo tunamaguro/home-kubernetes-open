@@ -1,3 +1,6 @@
 [submodule "running-apps/maguroskey-manifest"]
 	path = running-apps/maguroskey-manifest
 	url = https://github.com/tunamaguro/maguroskey-manifest.git
+[submodule "running-apps/home-kubernetes-metrics"]
+	path = running-apps/home-kubernetes-metrics
+	url = https://github.com/tunamaguro/home-kubernetes-metrics.git
