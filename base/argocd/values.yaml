@@ -1,18 +1,38 @@
 redis-ha:
   enabled: true
+  metrics:
+    enabled: true
 
 controller:
   replicas: 1
+  metrics:
+    enabled: true
+
+dex:
+  metrics:
+    enabled: true
+
+redis:
+  metrics: 
+    enabled: true
+  exporter:
+    enabled: true
 
 server:
   autoscaling:
     enabled: true
     minReplicas: 2
+  metrics:
+    enabled: true
 
 repoServer:
   autoscaling:
     enabled: true
     minReplicas: 2
+  metrics: 
+    enabled: true
 
 applicationSet:
   replicas: 2
+  metrics:
+    enabled: true
