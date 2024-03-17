@@ -14,11 +14,12 @@ $ helm repo add cilium https://helm.cilium.io/
 ```bash
 $ API_SERVER_IP=xxx.xxx.xxx.xxx
 $ API_SERVER_PORT=xxx
-$ helm install cilium cilium/cilium --version 1.15.1 \
+$ helm install cilium cilium/cilium --version 1.15.2 \
     --namespace kube-system \
     --set kubeProxyReplacement=true \
     --set k8sServiceHost=${API_SERVER_IP} \
     --set k8sServicePort=${API_SERVER_PORT}
+    -f values.yaml
 ```
 
 ## Check Cilium setup
@@ -47,6 +48,11 @@ $ cilium status --wait
 4. Check network connectivity
 ```bash
 $ cilium connectivity test
+```
+
+## Upgrade
+```bash
+$ helm cilium cilium/cilium  -n kube-system upgrade --version 1.15.2  --reuse-values -f values.yaml 
 ```
 
 ## Reference
