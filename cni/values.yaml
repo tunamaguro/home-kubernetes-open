@@ -8,3 +8,10 @@ hubble:
     enabled: true
   ui:
     enabled: true
+  metrics:
+    enableOpenMetrics: true
+    enabled: 
+      - dns:destinationContext=namespace|pod-name
+      - drop:destinationContext=namespace|pod-name
+      - tcp:destinationContext=namespace|pod-name
+      - icmp:destinationContext=namespace|pod-name
