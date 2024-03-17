@@ -1,0 +1,64 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: cloudflare-tunnel-policy
+  namespace: cloudflare-tunnel
+spec:
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints:
+        - {}
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: vmagent
+            io.kubernetes.pod.namespace: monitoring
+  egress:
+    - toEntities:
+        - cluster
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+    # https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/deploy-tunnels/tunnel-with-firewall/
+    - toFQDNs:
+        - matchPattern: "*.cftunnel.com"
+      toPorts:
+        - ports:
+            - port: "7844"
+    - toFQDNs:
+        - matchPattern: "*.cloudflareaccess.com"
+      toPorts:
+        - ports:
+            - port: "443"
+    - toFQDNs:
+        - matchPattern: "*.v2.argotunnel.com"
+      toPorts:
+        - ports:
+            - port: "7844"
+    - toFQDNs:
+        - matchName: api.cloudflare.com
+      toPorts:
+        - ports:
+            - port: "443"
+    - toFQDNs:
+        - matchName: cftunnel.com
+      toPorts:
+        - ports:
+            - port: "7844"
+    - toFQDNs:
+        - matchName: pqtunnels.cloudflareresearch.com
+      toPorts:
+        - ports:
+            - port: "443"
+    - toFQDNs:
+        - matchName: update.argotunnel.com
+      toPorts:
+        - ports:
+            - port: "443"
