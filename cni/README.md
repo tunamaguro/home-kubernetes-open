@@ -52,7 +52,7 @@ $ cilium connectivity test
 
 ## Upgrade
 ```bash
-$ helm cilium cilium/cilium  -n kube-system upgrade --version 1.15.2  --reuse-values -f values.yaml 
+$ helm -n kube-system upgrade cilium cilium/cilium --version 1.15.2 --reuse-values -f values.yaml 
 ```
 
 ## Reference
