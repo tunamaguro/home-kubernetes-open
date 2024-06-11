@@ -1,0 +1,81 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+spec:
+  project: default
+  source:
+    helm:
+      valuesObject:
+        injector:
+          enabled: false
+        server:
+          enabled: true
+          affinity: ""
+          standalone:
+            enabled: false
+          ingress:
+            enabled: true
+            ingressClassName: "nginx"
+            annotations:
+              nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+              cert-manager.io/cluster-issuer: letsencrypt-production
+            hosts:
+            - host: vault.tunamaguro.work
+              paths: []
+            tls:
+              - hosts: 
+                - vault.tunamaguro.work
+                secretName: vault-production-tls
+          dataStorage:
+            enabled: true
+            storageClass: "local-path"
+            size: 1Gi
+          auditStorage:
+            enabled: false
+            storageClass: null
+          ha:
+            enabled: true
+            replicas: 3
+            raft:
+              enabled: true
+              config: |
+                ui = true
+
+                listener "tcp" {
+                  tls_disable = 1
+                  address = "[::]:8200"
+                  cluster_address = "[::]:8201"
+                  # Enable unauthenticated metrics access (necessary for Prometheus Operator)
+                  #telemetry {
+                  #  unauthenticated_metrics_access = "true"
+                  #}
+                }
+                
+                storage "raft" {
+                  path = "/vault/data"
+                  retry_join {
+                    leader_api_addr = "http://vault-0.vault-internal:8200"
+                  }
+                  retry_join {
+                    leader_api_addr = "http://vault-1.vault-internal:8200"
+                  }
+                  retry_join {
+                    leader_api_addr = "http://vault-2.vault-internal:8200"
+                  }
+                }
+
+                service_registration "kubernetes" {}
+                 
+    chart: vault
+    repoURL: https://helm.releases.hashicorp.com
+    targetRevision: 0.28.0
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: vault
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated: 
+      prune: true
