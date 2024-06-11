@@ -8,7 +8,7 @@ spec:
   source:
     path: "deploy/chart/local-path-provisioner"
     repoURL: https://github.com/rancher/local-path-provisioner.git
-    targetRevision: v0.0.26
+    targetRevision: v0.0.27
     helm:
       parameters:
         - name: namespace
