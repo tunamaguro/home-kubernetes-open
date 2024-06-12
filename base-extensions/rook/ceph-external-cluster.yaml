@@ -28,5 +28,5 @@ spec:
         cephObjectStores: {}
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: rook-ceph-external 
+    namespace: rook-ceph-external-cluster
   
