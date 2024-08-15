@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -52,6 +53,18 @@ spec:
           ports:
             - name: http-metrics
               containerPort: 2000
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 20
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - cloudflare-tunnel
+                topologyKey: "kubernetes.io/hostname"
               
 ---
 apiVersion: autoscaling/v2
@@ -73,3 +86,14 @@ spec:
         target:
           type: Utilization
           averageUtilization: 300
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: tunnel-1-pdb
+  namespace: cloudflare-tunnel
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      pod: tunnel-1
