@@ -1,0 +1,34 @@
+# https://github.com/kubernetes-sigs/descheduler/blob/f6fe8fd0bd4c6636643564c006bc4da47125e8fc/kubernetes/base/configmap.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: descheduler-policy-configmap
+  namespace: kube-system
+data:
+  policy.yaml: |
+    apiVersion: "descheduler/v1alpha2"
+    kind: "DeschedulerPolicy"
+    profiles:
+      - name: ProfileName
+        pluginConfig:
+        - name: "DefaultEvictor"
+        - name: "RemovePodsViolatingInterPodAntiAffinity"
+        - name: "RemoveDuplicates"
+        - name: "LowNodeUtilization"
+          args:
+            thresholds:
+              "cpu" : 20
+              "memory": 20
+            targetThresholds:
+              "cpu" : 20
+              "memory": 20
+            useDeviationThresholds: true
+        plugins:
+          balance:
+            enabled:
+              - "LowNodeUtilization"
+              - "RemoveDuplicates"
+          deschedule:
+            enabled:
+              - "RemovePodsViolatingInterPodAntiAffinity"
