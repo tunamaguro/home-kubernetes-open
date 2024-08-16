@@ -84,7 +84,7 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 300
+          averageUtilization: 80
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
