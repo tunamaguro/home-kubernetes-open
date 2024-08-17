@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vertical-pod-autoscaler
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tunamaguro/home-kubernetes-open.git
+    path: base-extensions/vertical-pod-autoscaler
+    targetRevision: main
+  destination:
+    server: "https://kubernetes.default.svc"
+  syncPolicy:
+    automated: 
+      prune: true
