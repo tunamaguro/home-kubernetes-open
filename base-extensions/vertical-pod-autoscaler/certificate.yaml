@@ -1,3 +1,4 @@
+# ArgoCDでデプロイするために、admission-controllerが必要とする自己署名証明書を作成する
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:

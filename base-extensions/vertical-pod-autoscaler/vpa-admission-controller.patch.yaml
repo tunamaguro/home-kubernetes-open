@@ -1,3 +1,5 @@
+# certificate.yamlで作成した証明書を使うように指示する
+# https://github.com/kubernetes/autoscaler/blob/8be1e4baf0e82cec4efb0af0c6421a5ee8dcc167/vertical-pod-autoscaler/pkg/admission-controller/main.go#L58-L64
 ---
 apiVersion: apps/v1
 kind: Deployment
