@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vpa-admission-controller
+  namespace: kube-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: admission-controller
+          args:
+            [
+              "--v=4",
+              "--stderrthreshold=info",
+              "--reload-cert",
+              "--client-ca-file=/etc/tls-certs/ca.crt",
+              "--tls-cert-file=/etc/tls-certs/tls.crt",
+              "--tls-private-key=/etc/tls-certs/tls.key",
+            ]
