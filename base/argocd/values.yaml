@@ -21,18 +21,18 @@ redis:
 server:
   autoscaling:
     enabled: true
-    minReplicas: 2
+    minReplicas: 1
   metrics:
     enabled: true
 
 repoServer:
   autoscaling:
     enabled: true
-    minReplicas: 2
+    minReplicas: 1
   metrics: 
     enabled: true
 
 applicationSet:
-  replicas: 2
+  replicas: 1
   metrics:
     enabled: true
