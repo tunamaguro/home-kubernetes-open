@@ -1,0 +1,12 @@
+# https://github.com/rook/rook/blob/release-1.13/deploy/examples/csi/rbd/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rbd-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-rbd
