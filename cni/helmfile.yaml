@@ -6,7 +6,7 @@ releases:
   - name: cilium
     namespace: kube-system
     chart: cilium/cilium
-    version: 1.15.6
+    version: 1.16.1
     values:
       - "./config.yaml"
       - "./secret-config.yaml" # k8sServiceHost and k8sServicePort
