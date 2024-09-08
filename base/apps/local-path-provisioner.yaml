@@ -14,7 +14,7 @@ spec:
         - name: namespace
           value: "local-path-storage"
         - name: storageClass.defaultClass
-          value: "true"
+          value: false
   destination:
     server: "https://kubernetes.default.svc"
     namespace: local-path-storage
