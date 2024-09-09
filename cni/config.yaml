@@ -37,4 +37,5 @@ hubble:
       - flow:labelsContext=source_ip,source_namespace,source_workload,source_workload_kind,destination_ip,destination_namespace,destination_workload,destination_workload_kind,traffic_direction
       - flows-to-world:labelsContext=source_ip,source_namespace,source_workload,source_workload_kind,destination_ip,destination_namespace,destination_workload,destination_workload_kind,traffic_direction
       - icmp:labelsContext=source_ip,source_namespace,source_workload,source_workload_kind,destination_ip,destination_namespace,destination_workload,destination_workload_kind,traffic_direction
+      - port-distribution:labelsContext=source_ip,source_namespace,source_workload,source_workload_kind,destination_ip,destination_namespace,destination_workload,destination_workload_kind,traffic_direction
       - httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,source_workload_kind,destination_ip,destination_namespace,destination_workload,destination_workload_kind,traffic_direction
