@@ -24,6 +24,16 @@ data:
               "cpu" : 20
               "memory": 20
             useDeviationThresholds: true
+        - name: "RemoveFailedPods"
+          args:
+            reasons:
+            - "NodeAffinity"
+            exitCodes:
+            - 1
+            includingInitContainers: true
+            excludeOwnerKinds:
+            - "Job"
+            minPodLifetimeSeconds: 300
         plugins:
           balance:
             enabled:
